@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -46,24 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
-            builder: (ctx) {
-              return const ProfileScreen();
-            },
+            builder: (ctx) => const ProfileScreen(),
           ),
         );
       } catch (e) {
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
-          builder: (ctx) {
-            return AlertDialog(
-              title: const Text("Error"),
-              content: Text(e.toString()),
-            );
-          },
+          builder: (ctx) => AlertDialog(
+            title: const Text("Error"),
+            content: Text(e.toString()),
+          ),
         );
       }
       setState(() {
@@ -79,9 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                return const SignUpScreen();
-              },
+              builder: (context) => const SignUpScreen(),
             ));
           },
           icon: SvgPicture.asset('assets/icons/arrow_back.svg'),
@@ -174,9 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const SocialMediaIcons2(),
-              const SizedBox(height: 10),
-              const ForgotPasswordLink(),
+              SocialMediaIcons2()
             ],
           ),
         ),

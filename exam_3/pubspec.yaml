@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.1
   flutter_svg: ^2.0.10+1
   pinput: ^5.0.0
+  adaptive_theme: ^3.6.0
 
 
 
@@ -68,7 +69,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
-    - assets/fonts/Work-Sans/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -81,27 +82,27 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: WorkSans
-  #     fonts:
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Black.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-BlackItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Bold.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-BoldItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-ExtraBold.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-ExtraBoldItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-ExtraLight.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-ExtraLightItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Italic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Light.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-LightItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Medium.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-MediumItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Regular.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-SemiBold.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-SemiBoldItalic.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-Thin.ttf
-  #       - asset: assets/fonts/Work-Sans/WorkSans-ThinItalic.ttf
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: fonts/WorkSans-Black.ttf
+        - asset: fonts/WorkSans-BlackItalic.ttf
+        - asset: fonts/WorkSans-Bold.ttf
+        - asset: fonts/WorkSans-BoldItalic.ttf
+        - asset: fonts/WorkSans-ExtraBold.ttf
+        - asset: fonts/WorkSans-ExtraBoldItalic.ttf
+        - asset: fonts/WorkSans-ExtraLight.ttf
+        - asset: fonts/WorkSans-ExtraLightItalic.ttf
+        - asset: fonts/WorkSans-Italic.ttf
+        - asset: fonts/WorkSans-Light.ttf
+        - asset: fonts/WorkSans-LightItalic.ttf
+        - asset: fonts/WorkSans-Medium.ttf
+        - asset: fonts/WorkSans-MediumItalic.ttf
+        - asset: fonts/WorkSans-Regular.ttf
+        - asset: fonts/WorkSans-SemiBold.ttf
+        - asset: fonts/WorkSans-SemiBoldItalic.ttf
+        - asset: fonts/WorkSans-Thin.ttf
+        - asset: fonts/WorkSans-ThinItalic.ttf
 
   #         style: italic
   #   - family: Trajan Pro

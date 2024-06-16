@@ -1,14 +1,14 @@
+import 'package:exam_3/models/user_viewmodel.dart';
 import 'package:exam_3/views/screens/login_screen.dart';
 import 'package:exam_3/views/widgets/sing_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:exam_3/models/user_viewmodel.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -16,9 +16,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final passwordConfirmController = TextEditingController();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
+  final surnameController = TextEditingController();
+  final cardsController = TextEditingController();
 
   bool isLoading = false;
   bool isPasswordVisible = false;
@@ -28,9 +29,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    passwordConfirmController.dispose();
     nameController.dispose();
     phoneController.dispose();
+    surnameController.dispose();
+    cardsController.dispose();
     super.dispose();
   }
 
@@ -53,15 +55,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       try {
         await usersViewModel.register(
-            emailController.text,
-            passwordController.text,
-            nameController.text,
-            phoneController.text,
-            nameController.text, []);
+          emailController.text.trim(),
+          passwordController.text.trim(),
+          nameController.text.trim(),
+          phoneController.text.trim(),
+          surnameController.text.trim(),
+          cardsController.text.split(',').map((e) => e.trim()).toList(),
+        );
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text("Registration successful! Please login.")),
+            content: Text("Registration successful! Please login."),
+          ),
         );
 
         Navigator.pushReplacement(
@@ -114,21 +119,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 formKey: formKey,
                 emailController: emailController,
                 passwordController: passwordController,
-                passwordConfirmController: passwordConfirmController,
                 nameController: nameController,
                 phoneController: phoneController,
                 isPasswordVisible: isPasswordVisible,
                 isPasswordConfirmVisible: isPasswordConfirmVisible,
+                isLoading: isLoading,
+                onSubmit: submit,
+                passwordConfirmController: passwordController,
                 togglePasswordVisibility: togglePasswordVisibility,
                 togglePasswordConfirmVisibility:
                     togglePasswordConfirmVisibility,
-                isLoading: isLoading,
-                onSubmit: submit,
+                surnameController: surnameController,
+                cardsController: cardsController,
               ),
               const SizedBox(height: 20),
-              const SocialMediaIcons(),
-              const SizedBox(height: 10),
-              const TermsAndConditionsText(),
+              SocialMediaIcons(),
+              const SizedBox(height: 20),
+              TermsAndConditionsText(),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:exam_3/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthHttpServices {
@@ -40,4 +41,6 @@ class AuthHttpServices {
   Future<Map<String, dynamic>> login(String email, String password) async {
     return await _authenticate(email, password, "signInWithPassword");
   }
+
+  updateUserProfile(User user) {}
 }

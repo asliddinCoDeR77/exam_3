@@ -94,6 +94,8 @@ class SignUpForm extends StatelessWidget {
     required this.togglePasswordConfirmVisibility,
     required this.isLoading,
     required this.onSubmit,
+    required TextEditingController surnameController,
+    required TextEditingController cardsController,
   }) : super(key: key);
 
   @override

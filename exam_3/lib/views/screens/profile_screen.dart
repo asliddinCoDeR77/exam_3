@@ -1,9 +1,12 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:exam_3/models/user.dart';
+import 'package:exam_3/models/user_viewmodel.dart';
+import 'package:exam_3/views/screens/promocode_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:exam_3/models/user.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -26,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void _editProfile() async {
+  Future<void> _editProfile() async {
     final result = await _showEditProfileDialog(context, user);
 
     if (result != null) {
@@ -36,11 +39,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (updatedName != null && updatedEmail != null && updatedPhone != null) {
         setState(() {
-          user?.update(updatedName, updatedEmail, updatedPhone);
+          user = user?.copyWith(
+            name: updatedName,
+            email: updatedEmail,
+            phone: updatedPhone,
+          );
         });
 
-        await usersViewmodel.updateUser(
-            updatedName, updatedEmail, updatedPhone);
+        await usersViewmodel.saveUserToPreferences(user!);
+
+        await usersViewmodel.updateUserOnFirebase(user!);
       }
     }
   }
@@ -104,12 +112,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _navigateToDetail(String title, String subtitle) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ProfileScreen(),
-      ),
-    );
+    // Implement navigation logic as needed
+  }
+
+  // Method to change theme
+  void _changeTheme(BuildContext context) {
+    final themeMode = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.light
+        ? AdaptiveThemeMode.dark
+        : AdaptiveThemeMode.light;
+    AdaptiveTheme.of(context).setThemeMode(themeMode);
   }
 
   @override
@@ -128,6 +139,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           IconButton(
+            onPressed: () => _changeTheme(context), // Call _changeTheme method
+            icon: SvgPicture.asset(
+                'assets/icons/theme.svg'), // Replace with your theme change icon
+          ),
+          IconButton(
             onPressed: _editProfile,
             icon: SvgPicture.asset('assets/icons/edit.svg'),
           ),
@@ -142,11 +158,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Image.asset('assets/images/boy.png', width: 100, height: 100),
             ),
             const SizedBox(height: 16),
-            Text(user?.name ?? 'null',
-                style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff222B45))),
+            Text(
+              user?.name ?? 'null',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff222B45),
+              ),
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: ListView(
@@ -156,26 +175,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: const Text('Delivery address'),
                     subtitle: const Text('NYC, Broadway ave 79'),
                     trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => _navigateToDetail(
+                        'Delivery address', 'NYC, Broadway ave 79'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/wallet.svg'),
                     title: const Text('Payment method'),
                     subtitle: const Text('Mastercard ****7890'),
                     trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => _navigateToDetail(
+                        'Payment method', 'Mastercard ****7890'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/language.svg'),
-                    title: Text('Language'),
+                    title: const Text('Language'),
                     subtitle: const Text('English'),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => _navigateToDetail('Language', 'English'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/notification.svg'),
                     title: const Text('Notification'),
                     trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => _navigateToDetail('Notification', ''),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/promo.svg'),
@@ -184,17 +205,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'You have 2 new promo codes',
                       style: TextStyle(color: Colors.red),
                     ),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Promoccode())), // Navigate to PromoCodeScreen
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/terms.svg'),
                     title: const Text('Terms and conditions'),
-                    onTap: () => _navigateToDetail,
+                    onTap: () => _navigateToDetail('Terms and conditions', ''),
                   ),
                   ListTile(
-                    leading: SvgPicture.asset('assets/icons/about.svg'),
-                    title: const Text('About app'),
-                    onTap: () => _navigateToDetail,
+                    leading: SvgPicture.asset('assets/icons/logout.svg'),
+                    title: const Text('Log out'),
+                    onTap: () async {
+                      await usersViewmodel.saveUserToPreferences(User(
+                        id: '',
+                        email: '',
+                        password: '',
+                        token: '',
+                        expiryDate: DateTime.now(),
+                        name: '',
+                        phone: '',
+                      ));
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
